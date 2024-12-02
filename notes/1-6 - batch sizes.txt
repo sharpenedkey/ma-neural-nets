@@ -1,0 +1,30 @@
+1-two-layered-neural-net:
+* Created a rudimentary two-layer NN architecture. A one-layer architecture was tried beforehand, and it showed lesser quality results than when using two layers
+* Each layer makes 20 random combinations of 3 features from the previous layer
+* Training is done with the help of a train-validation 80-20 split on the training dataset
+* Afterwards, we test the resulting model on a separate testing dataset that is 4 times smaller than the total training dataset (train+val)
+* In order to train the model, keras first needs to one-hot encode the labels. String labels (KDD + Darknet) needed to be converted to numericals first, which doesn't impede on the training quality in any form
+* The architecture has N layers: 1st is a combination layer with 3 dense layers, 2nd is another combination layer with the same 3 dense layers, then we combine the outputs of all 20 feature groups into a single vector, 4th layer refines then features using a dense layer with 128 units, 5th is the dropout layer, and 6th produces a prediction using a dense layer with a softmax activation
+* Took a very long time due to the small batch size
+
+2-increased-batch-size:
+* Increased the batch size to 256 while keeping the architecture intact
+* Was a lot faster while also having better metrics
+
+3-batch-size-equal-dataset:
+* Batch size was set to the size of the entire dataset, such that each epoch now takes just one iteration to be done
+* Was fastest, but also way less accurate
+
+4-batch-one-percent:
+* Batch size was set to one percent of each dataset, without regard to stratification
+
+5-stratified-batch:
+* Implemented a stratified batching mechanism that made sure to have a similar representation of all labels in each iteration as in the original dataset
+* Each batch had to be 10% of the dataset, otherwise the thing broke immediately
+* Had some of the worst metrics
+
+6-batch-more-percent:
+* Batch size was instead set to 5% of the original dataset
+* Number was determined after a number of benchmarks which showed 5% to be the best option for now
+
+=> Turns out that 32 is the best abtch size. However, it's also by many factors the slowest to compute. Of the other ones, 1% is the best batch size for Shuttle, Covertype and Darknet. For KDD, 256 seems to be better, though 1% isn't much worse. As such, we're picking the 1% size without stratification from iteration 4.

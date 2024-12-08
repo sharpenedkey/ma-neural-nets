@@ -1,0 +1,7 @@
+7-half-size-and-smote:
+* the largest class' size gets cut by 2
+* afterwards we apply SMOTE to resample it
+
+8-smote-to-second-largest:
+* the largest class gets downsampled to the second largest
+* afterwards, apply SMOTE

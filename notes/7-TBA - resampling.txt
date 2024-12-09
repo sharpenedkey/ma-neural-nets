@@ -1,7 +1,31 @@
 7-half-size-and-smote:
+* bases itself on iteration 4
 * the largest class' size gets cut by 2
 * afterwards we apply SMOTE to resample it
 
 8-smote-to-second-largest:
+* bases itself on iteration 4
 * the largest class gets downsampled to the second largest
 * afterwards, apply SMOTE
+
+9-smote-factor-10k:
+* bases itself on iteration 4
+* all classes (except largest) get upscaled using smote by a factor of 10K
+* no class can get upscaled larger than the biggest subclass (so the factor gets cut if it would)
+
+10-smote-factor-5k:
+* same as last, but with a factor of 5K
+
+11-smote-factor-2-5k:
+* same as last, but with a factor of 2.5K
+
+12-4-base-class-weights:
+* computes class weights based on distribution and passes them to the fit() function
+* the smaller the class, the larger the weight
+* should modify the loss computation to give more credit to smaller classes
+
+13-4-base-weighted-cat-ent:
+* instead of passing class weights, uses a custom loss function (weighted_categorical_crossentropy)
+
+14-4-base-focal-loss:
+*bases itself on 4 like 12 and 13, uses focal loss instead

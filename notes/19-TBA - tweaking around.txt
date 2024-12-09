@@ -1,0 +1,10 @@
+19-18-base-cross-loss:
+* batch size identical to iteration 4 (1%)
+* no validation split
+* uses a cross-validation loss like 4
+
+20-18-base-32-bs:
+* identical architecture to iteration 1
+* no validation split
+* uses a focal loss
+* batch size of 32

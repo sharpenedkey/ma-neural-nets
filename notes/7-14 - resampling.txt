@@ -29,3 +29,15 @@
 
 14-4-base-focal-loss:
 * bases itself on 4 like 12 and 13, uses focal loss instead
+
+
+=>
+
+SMOTE by itself, the default implementation, seems to underperform drastically.
+This might be due to the fact that SMOTE tends to introduce some artifacts when rebalancing highly unbalanced datasets, like KDD or Darknet.
+
+Interestingly, using class weights also lowers the quality of the model. THis might be due to the skew introduced by tiny classes: their weights are too large.
+
+Same goes for the weighted categorical cross-entropy.
+
+The focal loss performed best, as it tries to strike a balance between weighted and macro accuracies.

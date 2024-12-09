@@ -9,3 +9,16 @@
 
 18-14-base-no-val:
 * based on 14, no cross-validation
+
+
+=>
+
+Here we once again assured ourselves that using class weights is worse than the focal loss.
+
+We also saw that 5-fold cross-validation performs better than a random validation on just one fold.
+This is probably due to the imbalanced nature of the datasets: some classes probably don't make it into just one fold,
+which makes validation loss a sub-par stopping criterion.
+
+Using no validation, applying instead the training loss to be the early stopping criterion, interestingly seemed
+to perform best. Probably since that takes into account all classes when computing the loss. Even though we only
+apply the model on the test set after training, there seems to be little overfitting to the training set.

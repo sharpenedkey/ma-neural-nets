@@ -1,0 +1,11 @@
+15-12-base-k-fold-val:
+* based on 12, uses a stratified 5-fold cross-validation
+
+16-14-base-k-fold-val:
+* based on 14, uses a stratified 5-fold cross-validation
+
+17-12-base-no-val:
+* based on 12, no cross-validation
+
+18-14-base-no-val:
+* based on 14, no cross-validation

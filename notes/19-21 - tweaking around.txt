@@ -1,0 +1,58 @@
+19-18-base-cross-loss:
+* batch size identical to iteration 4 (1%)
+* no validation split
+* uses a cross-validation loss like 4
+
+20-18-base-32-bs:
+* identical architecture to iteration 1
+* no validation split
+* uses a focal loss
+* batch size of 32
+
+21-19-base-5-fold-val:
+* identical to 19, but uses 5-fold validation
+
+
+=>
+
+Categorical cross-entropy loss actually seems to work better than focal loss.
+Maybe in later iterations the latter will turn out to be better, but now, we keep to that.
+
+Despite lowering the batch size to 32 (which should give a noticeable improvement in quality),
+iteration 20 didn't outperform iteration 19 on average, because 20 used focal loss.
+
+The 4th iteration had the best performance, even better than 21st that had the same exact architecture,
+but used 5-fold validation splitting. This is largely counterintuitive, and may be due to the fact that
+the validation splits performed during the training of that iteration were just "luckier", and therefore
+allowed for better generalization.
+
+The decrease in performance for the 21st iteration can be observed most for the Shuttle and Darknet datasets,
+but not so much for the KDD dataset (as its benchmarks are likely way too low for a decrease to be noticeable).
+
+The best-performing approach thus far seems to be the 19th architecture version, which doesn't have any validation splits.
+When we skip validation, the model has access to the full training dataset, including minority class samples.
+This gives the model more opportunities to learn patterns from the underrepresented classes,
+which can improve its generalization to the test set.
+
+In an imbalanced dataset, every minority class sample is critical for effective training, so splitting off
+a validation set could disproportionately reduce the minority class representation in training.
+
+Class weights or loss adjustments (e.g., weighted cross-entropy) also become more effective
+when the training data is larger and better represents the minority classes. Without validation splitting,
+the model might learn more balanced decision boundaries, especially if the test set mirrors
+the training set's class distribution, which it does in our case.
+
+In highly imbalanced datasets, the validation loss might not always provide a reliable signal of overfitting.
+Models can struggle to generalize to minority classes in the validation set,
+leading to early stopping before the model fully learns these patterns.
+
+Without a validation set, the model might train longer, potentially improving its ability to handle imbalanced data.
+This was the case for our tests as well, where training without a validation set took more than twice as long
+when compared to with a 20% validation set. This is likely the result of having access to a larger training set,
+as well as using the training loss as an early stopping criterion instead of the validation loss.
+
+With all these things considered, the next few iterations will attempt to introduce SMOTE-like approaches
+to rebalancing the datasets. These will be benchmarked both using a 5-fold validation, and no validation.
+
+After that, the best approach to validation and rebalancing will be selected as a basis for further customization
+for the architecture.

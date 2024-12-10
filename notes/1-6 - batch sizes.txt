@@ -3,8 +3,12 @@
 * Each layer makes 20 random combinations of 3 features from the previous layer
 * Training is done with the help of a train-validation 80-20 split on the training dataset
 * Afterwards, we test the resulting model on a separate testing dataset that is 4 times smaller than the total training dataset (train+val)
-* In order to train the model, keras first needs to one-hot encode the labels. String labels (KDD + Darknet) needed to be converted to numericals first, which doesn't impede on the training quality in any form
-* The architecture has N layers: 1st is a combination layer with 3 dense layers, 2nd is another combination layer with the same 3 dense layers, then we combine the outputs of all 20 feature groups into a single vector, 4th layer refines then features using a dense layer with 128 units, 5th is the dropout layer, and 6th produces a prediction using a dense layer with a softmax activation
+* In order to train the model, keras first needs to one-hot encode the labels.
+  String labels (KDD + Darknet) needed to be converted to numericals first, which doesn't impede on the training quality in any form
+* The architecture has N layers: 1st is a combination layer with 3 dense layers,
+  2nd is another combination layer with the same 3 dense layers, then we combine the outputs of all 20 feature groups into a single vector,
+  4th layer refines then features using a dense layer with 128 units, 5th is the dropout layer,
+  and 6th produces a prediction using a dense layer with a softmax activation
 * Took a very long time due to the small batch size
 
 2-increased-batch-size:
@@ -27,4 +31,13 @@
 * Batch size was instead set to 5% of the original dataset
 * Number was determined after a number of benchmarks which showed 5% to be the best option for now
 
-=> Turns out that 32 is the best abtch size. However, it's also by many factors the slowest to compute. Of the other ones, 1% is the best batch size for Shuttle, Covertype and Darknet. For KDD, 256 seems to be better, though 1% isn't much worse. As such, we're picking the 1% size without stratification from iteration 4.
+
+=> 
+
+Turns out that 32 is the best batch size. However, it's also by many factors the slowest to compute.
+
+Of the other ones, 1% is the best batch size for Shuttle, Covertype and Darknet.
+
+For KDD, 256 seems to be better, though 1% isn't much worse.
+
+As such, we're picking the 1% size without stratification from iteration 4 for now.

@@ -35,6 +35,9 @@
 
 SMOTE by itself, the default implementation, seems to underperform drastically.
 This might be due to the fact that SMOTE tends to introduce some artifacts when rebalancing highly unbalanced datasets, like KDD or Darknet.
+This hypothesis is supported by iteration 10, where we limited the multiplication factor to 5000. This introduces enough new samples to add some
+robustness (which is why it's better than a factor of 2500), while also avoiding adding too many artifacts (which is why it outperforms all other
+approaches that multiply even the tiny classes by larger factors).
 
 Interestingly, using class weights also lowers the quality of the model. THis might be due to the skew introduced by tiny classes: their weights are too large.
 

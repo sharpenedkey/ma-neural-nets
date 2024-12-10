@@ -43,4 +43,4 @@ Interestingly, using class weights also lowers the quality of the model. THis mi
 
 Same goes for the weighted categorical cross-entropy.
 
-The focal loss performed best, as it tries to strike a balance between weighted and macro accuracies.
+The focal loss performed well, as it tries to strike a balance between weighted and macro accuracies. Still, it wasn't as good as the categorical cross-entropy loss.

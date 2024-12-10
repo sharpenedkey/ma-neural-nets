@@ -1,14 +1,35 @@
-21
-* SMOTENC
+Combine:
+* no validation
+* 5-fold validation
 
-22
-* ADASYN
-
-23
+With:
+* SMOTE
+* SMOTENC (doesn't work: we've already converted all features into numerical. The only thing SMOTE-NC does is one-hot encode the categorical features, which we already did)
+* ADASYN (no need to define an upper limit to each class, since ADASYN estimates the expected size itself based on the distribution of feature values)
 * BorderlineSMOTE
+* KMeansSMOTE
+* SVMSMOTE
+
+Then maybe try looking at whether cross-loss or focal loss is better.
+
+22-smote-no-val:
+* SMOTE
+* no validation
+* batch size of 0,5% of dataset
+* categorical cross-entropy loss
+
+23-smote-5-fold-val:
+* SMOTE
+* 5-fold validation
+* batch size of 0,5% of dataset
+* categorical cross-entropy loss
 
 24
-* KMeansSMOTE
 
 25
-* SVMSMOTE
+
+26
+
+27
+
+28-kmeans-smote-no-val:

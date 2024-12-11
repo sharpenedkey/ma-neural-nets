@@ -1,13 +1,6 @@
-Combine:
-* no validation
-* 5-fold validation
-
 With:
 * SMOTE
-* SMOTENC (doesn't work: we've already converted all features into numerical. The only thing SMOTE-NC does is one-hot encode the categorical features, which we already did)
-* ADASYN (no need to define an upper limit to each class, since ADASYN estimates the expected size itself based on the distribution of feature values)
 * BorderlineSMOTE
-* KMeansSMOTE
 * SVMSMOTE
 
 Then maybe try looking at whether cross-loss or focal loss is better.
@@ -24,12 +17,28 @@ Then maybe try looking at whether cross-loss or focal loss is better.
 * batch size of 0,5% of dataset
 * categorical cross-entropy loss
 
-24
 
-25
+=>
 
-26
+First we tried ADASYN. There was need to define an upper limit to each class,
+since ADASYN estimates the expected size itself based on the distribution of feature values.
+ADASYN returned an error "Not any neigbours belong to the majority class.
+This case will induce a NaN case with a division by zero.
+ADASYN is not suited for this specific dataset. Use SMOTE instead."
+This was the case for the KDD set. Since ADASYN isn't applicable to one of the datasets,
+we take it out of consideration.
 
-27
+SMOTE-NC wasn't applicable: we've already converted all features into numerical.
+The only thing SMOTE-NC does is one-hot encode the categorical features, which we already did.
 
-28-kmeans-smote-no-val:
+KMeansSMOTE was unable to find with sufficient samples for many classes of the Shuttle dataset.
+Therefore we lowered the cluster_balance_threshold to 0, such that it could start in the first place.
+Still, the KDD dataset failed with an error "No clusters found with sufficient samples of class perl.
+Try lowering the cluster_balance_threshold or increasing the number of clusters."
+Since the threshold was already minimal and we couldn't increase the amount of clusters any higher
+(as there were only 2 entries for some classes in the KDD dataset), we discraded KMeansSMOTE as 
+a resampling algorithm.
+
+SVMSMOTE turned out to be prohibitively slow. SO much so that doing the resampling before every benchmark
+would take days if not weeks. Instead, we first resampled the data in separate Jupyter notebooks, and then
+loaded it into our benchmarking notebooks.

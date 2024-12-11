@@ -17,6 +17,18 @@ Then maybe try looking at whether cross-loss or focal loss is better.
 * batch size of 0,5% of dataset
 * categorical cross-entropy loss
 
+24-bord-smote-no-val:
+* BorderlineSMOTE
+* no validation
+* batch size of 0,5% of dataset
+* categorical cross-entropy loss
+
+25-bord-smote-5-fold-val:
+* BorderlineSMOTE
+* 5-fold validation
+* batch size of 0,5% of dataset
+* categorical cross-entropy loss
+
 
 =>
 

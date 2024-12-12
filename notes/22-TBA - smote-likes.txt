@@ -51,6 +51,12 @@ Since the threshold was already minimal and we couldn't increase the amount of c
 (as there were only 2 entries for some classes in the KDD dataset), we discraded KMeansSMOTE as 
 a resampling algorithm.
 
-SVMSMOTE turned out to be prohibitively slow. SO much so that doing the resampling before every benchmark
-would take days if not weeks. Instead, we first resampled the data in separate Jupyter notebooks, and then
+SVMSMOTE turned out to be prohibitively slow. So much so that doing the resampling before every benchmark
+would take days. Instead, we first resampled the data in separate Jupyter notebooks, and then
 loaded it into our benchmarking notebooks.
+First we were able to resample the Shuttle and Covertype datasets. When bencdhmarking those, the metrics
+turned out to be worse than for the architecture iterations where no rebalancing mechanism was used.
+The duration of resampling for the KDD and Covertype datasets was above 12 hours, which led us to conclude
+that continuing this experiment wasn't worth it. In a business context, performance is one of the primal
+concerns of any business case: rebalancing approaches that take ten times as much space and require
+days to run (slower than the other approaches by many factors) are not that.

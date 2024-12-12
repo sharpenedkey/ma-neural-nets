@@ -28,7 +28,8 @@
 * instead of passing class weights, uses a custom loss function (weighted_categorical_crossentropy)
 
 14-4-base-focal-loss:
-* bases itself on 4 like 12 and 13, uses focal loss instead
+* 1% batch size
+* uses focal loss
 
 
 =>

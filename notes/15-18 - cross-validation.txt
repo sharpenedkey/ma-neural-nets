@@ -8,7 +8,9 @@
 * based on 12, no cross-validation
 
 18-14-base-no-val:
-* based on 14, no cross-validation
+* 1% batch size
+* focal loss
+* no cross-validation
 
 
 =>

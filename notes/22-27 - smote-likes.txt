@@ -1,10 +1,3 @@
-With:
-* SMOTE
-* BorderlineSMOTE
-* SVMSMOTE
-
-Then maybe try looking at whether cross-loss or focal loss is better.
-
 22-smote-no-val:
 * SMOTE
 * no validation
@@ -28,6 +21,18 @@ Then maybe try looking at whether cross-loss or focal loss is better.
 * 5-fold validation
 * batch size of 0,5% of dataset
 * categorical cross-entropy loss
+
+26-bsmote-fl-no-val:
+* BorderlineSMOTE
+* no validation
+* batch size of 0,5% of dataset
+* focal loss
+
+27-bsmote-fl-no-val:
+* BorderlineSMOTE
+* 5-fold validation
+* batch size of 0,5% of dataset
+* focal loss
 
 
 =>
@@ -54,9 +59,18 @@ a resampling algorithm.
 SVMSMOTE turned out to be prohibitively slow. So much so that doing the resampling before every benchmark
 would take days. Instead, we first resampled the data in separate Jupyter notebooks, and then
 loaded it into our benchmarking notebooks.
-First we were able to resample the Shuttle and Covertype datasets. When bencdhmarking those, the metrics
-turned out to be worse than for the architecture iterations where no rebalancing mechanism was used.
+First we were able to resample the Shuttle and Covertype datasets. When benchmarking those, almost all metrics
+turned out to be worse than for the architecture iterations where no rebalancing mechanism was used, or even
+where SMOTE was utilized. The only exceptions were the F2, the Weighted Average Recall and F1 Score for the
+Darknet dataset.
 The duration of resampling for the KDD and Covertype datasets was above 12 hours, which led us to conclude
 that continuing this experiment wasn't worth it. In a business context, performance is one of the primal
 concerns of any business case: rebalancing approaches that take ten times as much space and require
-days to run (slower than the other approaches by many factors) are not that.
+days to run (slower than the other approaches by many factors) are not that. Though rebalancing the Shuttle
+and Darknet datasets took less time, these, still, underperformed on almost all metrics, especially the macro
+metrics -- even though improving these metrics was one of the main reasons for us attempting to use
+rebalancing.
+
+In conclusion, it was decided that we would not use any rebalancing mechanisms that modify the datasets.
+Not only did it not improve the performance of the architecture, but it also delegated the purpose of building
+a neural network capable of processing imbalanced datasets onto a separate pre-processing element.

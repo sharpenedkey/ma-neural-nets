@@ -28,7 +28,7 @@
 * batch size of 0,5% of dataset
 * focal loss
 
-27-bsmote-fl-no-val:
+27-bsmote-fl-5-fold-val:
 * BorderlineSMOTE
 * 5-fold validation
 * batch size of 0,5% of dataset

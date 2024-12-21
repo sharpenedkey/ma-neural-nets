@@ -1,0 +1,38 @@
+28-1d-conv-dynamic:
+* amount of layers depends on amount of features
+* at least 2 layers, at most floor[features/10]
+* e.g. for darknet (103 features), 10 layers total
+* e.g. for shuttle, 2 layers (only 9 features)
+* first layer has features*2 filters
+* each subsequent layer has twice as less filters as the previous
+* each layer has at least 16 filters (sliding windows)
+
+29-1d-conv-dyn-less-layers:
+* like 28, but with less layers total
+* minimum is 1 layer
+* maximum is floor[features/20]
+* e.g. for darknet, 5 layers
+* kdd: 6, covertype: floor(54/20)=2, shuttle:1
+
+
+=>
+
+First we attempted to adapt ConvNeXt to our use case.
+ConvNeXt, however, much like any other visual neural network,
+is built for recognizing images. As such, every already existing
+framework that implements this model also expects image data,
+randing anywhere from 32x32 px to 324x324 px, with 3 color
+channels in each image (essentially expecting 3D data).
+Our datasets, however, are all one-dimensional. Adapting them
+to ConvNeXt's expectations would mean modifying the data structure
+itself, either by padding the missing values with zeroes or by
+first extracting some kinds of numerical features that could then
+be plotted onto this three-dimensional grid. The quality of this approach
+would largely depend on the nature of the dataset in question. Datasets
+like Shuttle, that have only 9 feature columns in total, would probably
+have to be padded in order to avoid introducing unnecessary artifacts.
+Others, like KDD (with 126 features), were under a much lower risk of
+artifact introduction, but one that was still non-zero.
+
+As such, we instead decided to improve on our original NN architecture
+by taking heavy inspiration from ConvNeXt.

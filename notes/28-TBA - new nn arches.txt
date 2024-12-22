@@ -36,3 +36,20 @@ artifact introduction, but one that was still non-zero.
 
 As such, we instead decided to improve on our original NN architecture
 by taking heavy inspiration from ConvNeXt.
+
+Iteration 28 has a bit worse performance for KDD, among others. That can 
+theoretically be explained by the urge to over-generalize in the 28th architecture 
+version, since KDD would bring about 12 layers in that architecture and only
+6 in the 29th version. However, some benchmarks are very close in both architecture
+iterations, meaning that this over-generalization doesn't happen at all times.
+Regardless, more layers doesn't necessarily mean a better architecture, as can
+be seen in this case. 12 layers have never brought better performance than only
+6, but have indeed lead to higher runtimes.
+
+The 29th version was better than the 28th in almost all situations, save for
+Covertype. The 28th version lead to it being trained on a NN with 5 layers,
+while the 29th, due to the nature of computing the amount of necessary layers,
+had only 2 convolutional layers.
+
+This lead to the idea that, perhaps, making the amount of layers dependent on the
+width of the used dataset was a wrong idea in the first place.

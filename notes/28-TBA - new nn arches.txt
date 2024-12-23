@@ -1,8 +1,11 @@
 28-1d-conv-dynamic:
 * amount of layers depends on amount of features
 * at least 2 layers, at most floor[features/10]
-* e.g. for darknet (103 features), 10 layers total
 * e.g. for shuttle, 2 layers (only 9 features)
+  covertype: 54 features => 5 layers
+  kdd: 126 features => 12 layers
+  darknet: 103 features => 10 layers
+  shuttle, 2 layers (only 9 features)
 * first layer has features*2 filters
 * each subsequent layer has twice as less filters as the previous
 * each layer has at least 16 filters (sliding windows)
@@ -11,8 +14,10 @@
 * like 28, but with less layers total
 * minimum is 1 layer
 * maximum is floor[features/20]
-* e.g. for darknet, 5 layers
-* kdd: 6, covertype: floor(54/20)=2, shuttle:1
+* e.g. for shuttle, 1 layer
+  covertype: 54 features => 2 layers
+  kdd: 126 features => 6 layers
+  darknet: 103 features => 5 layers
 
 
 =>

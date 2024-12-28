@@ -19,6 +19,14 @@
   kdd: 126 features => 6 layers
   darknet: 103 features => 5 layers
 
+29-1d-4-layers-decr-filters:
+* always four layers
+* filter number decreases over time:
+  layer 1: int(max(16, input_dim * 2)) layers
+  layer 2: input_dim
+  layer 3: int(max(16, input_dim // 2))
+  layer 4: int(max(16, input_dim // 4))
+
 
 =>
 
@@ -58,3 +66,25 @@ had only 2 convolutional layers.
 
 This lead to the idea that, perhaps, making the amount of layers dependent on the
 width of the used dataset was a wrong idea in the first place.
+
+The 30th iteration aimed to circumvent this issue by setting the amount of layers
+to a constant of four. The decision was also made to decrease the amount of filters
+(and as such, extracted features) in each subsequent layer. This had multiple reasons,
+the largest one being runtime constraints.
+
+If the amount of features were to increase
+in each subsequent layer, this would have very negatively impacted the runtime of
+the training process and benchmarks as a whole. In other architecture versions that
+didn't make the final cut, the amount of filters was instead either doubled in each
+subsequent layer, or increased by 50%. This more than doubled the runtime necessary
+to train at least one neural network on the KDD dataset, resulting in requiring more
+than 48 hours to go through just 80 training epochs on a modern PC (CPU i9-9980HK
+with 64 GB of RAM) -- and this for just one training run. This would have made benchmarking
+the architecture and iteratively improving on it nigh impossible. Even though the
+accuracy and the loss function were promising during training, this is an approach that
+was ultimately discarded as too demanding on the hardware. After all, the neural networks
+being developed were only supposed to be one part of the overall architecture, acting
+more as feature extractors than anything else. Thus, the decision was to instead opt
+for an architecture with a decreasing amount of filters. These extracted features
+could then be combined with the features of the original datasets to be then fed to
+a classifying/boosting algorithm like CatBoost or XGBoost.

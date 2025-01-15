@@ -88,3 +88,16 @@ more as feature extractors than anything else. Thus, the decision was to instead
 for an architecture with a decreasing amount of filters. These extracted features
 could then be combined with the features of the original datasets to be then fed to
 a classifying/boosting algorithm like CatBoost or XGBoost.
+
+<... 30-31 ...>
+
+It was also attempted to use random convolutions in the architecture with 5 layers.
+Instead of relying on the default Tensorflow implementation of the sliding windows,
+which simply moved the window along the table with a given stride, we tried to
+sample 3 random features from the previous layer in each layer N times, with N
+depending on the given layer. The idea was that this would make the feature generator,
+and thus the classifier, more robust. Instead, we found that the runtimes increased
+twofold, while the resulting NN itself performed way worse: the weighted metrics all
+were around 20-70% worse, while the macro metrics (accuracy, precision, F1) were
+2 to 4 times worse. What's more, the KDD benchmarks couldn't be run on any machine
+due to memory problems.

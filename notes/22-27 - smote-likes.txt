@@ -63,13 +63,16 @@ First we were able to resample the Shuttle and Covertype datasets. When benchmar
 turned out to be worse than for the architecture iterations where no rebalancing mechanism was used, or even
 where SMOTE was utilized. The only exceptions were the F2, the Weighted Average Recall and F1 Score for the
 Darknet dataset.
-The duration of resampling for the KDD and Covertype datasets was above 12 hours, which led us to conclude
-that continuing this experiment wasn't worth it. In a business context, performance is one of the primal
+The duration of resampling for the Covertype dataset was above 12 hours. In a business context,
+performance is one of the primal
 concerns of any business case: rebalancing approaches that take ten times as much space and require
 days to run (slower than the other approaches by many factors) are not that. Though rebalancing the Shuttle
 and Darknet datasets took less time, these, still, underperformed on almost all metrics, especially the macro
 metrics -- even though improving these metrics was one of the main reasons for us attempting to use
 rebalancing.
+Finally, as for the KDD dataset, the algorithm could not find any support vectors and considered all
+features to be noise-like, which lead to an abrupt stop to the execution:
+ValueError: All support vectors are considered as noise. SVM-SMOTE is not adapted to your dataset. Try another SMOTE variant.
 
 In conclusion, it was decided that we would not use any rebalancing mechanisms that modify the datasets.
 Not only did it not improve the performance of the architecture, but it also delegated the purpose of building

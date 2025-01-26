@@ -19,13 +19,38 @@
   kdd: 126 features => 6 layers
   darknet: 103 features => 5 layers
 
-29-1d-4-layers-decr-filters:
+30-1d-4-layers-decr-filters:
 * always four layers
 * filter number decreases over time:
   layer 1: int(max(16, input_dim * 2)) layers
   layer 2: input_dim
   layer 3: int(max(16, input_dim // 2))
   layer 4: int(max(16, input_dim // 4))
+
+31-1d-5-layers-decr-filters:
+* always 5 layers
+* filter number decreases over time:
+  layer 1: int(max(16, input_dim * 2)) layers
+  layer 2: input_dim
+  layer 3: int(max(16, input_dim // 2))
+  layer 4: int(max(16, input_dim // 4))
+  layer 4: int(max(16, input_dim // 8))
+
+32-1d-5-layers-bsmote:
+* based on 31
+* datasets are rebalanced using BorderlineSMOTE
+* the upscaled classes can be no larger than
+  10% of the biggest class to avoid artifacts
+
+33-1d-5-layers-xgboost:
+* based on 31
+* final extracted features are fed into XGBoost
+
+34-5-layers-boost-all:
+* based on 33
+* XGBoost received not only extracted features,
+  but also the original features (i.e. it
+  receives a combination of both)
 
 
 =>

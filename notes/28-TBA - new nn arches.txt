@@ -46,11 +46,21 @@
 * based on 31
 * final extracted features are fed into XGBoost
 
-34-5-layers-boost-all:
+34-1d-5-layers-xgboost-comb:
 * based on 33
 * XGBoost received not only extracted features,
   but also the original features (i.e. it
   receives a combination of both)
+
+35-1d-5-layers-hafl:
+* based on 31
+* uses HAFL loss instead of cross-entropy
+* loss function is custom-made
+
+36-1d-5-layers-fl:
+* based on 31
+* uses focal loss
+* loss function is taken from tensorflow's library
 
 
 =>
@@ -114,8 +124,6 @@ for an architecture with a decreasing amount of filters. These extracted feature
 could then be combined with the features of the original datasets to be then fed to
 a classifying/boosting algorithm like CatBoost or XGBoost.
 
-<... 30-31 ...>
-
 It was also attempted to use random convolutions in the architecture with 5 layers.
 Instead of relying on the default Tensorflow implementation of the sliding windows,
 which simply moved the window along the table with a given stride, we tried to
@@ -126,3 +134,60 @@ twofold, while the resulting NN itself performed way worse: the weighted metrics
 were around 20-70% worse, while the macro metrics (accuracy, precision, F1) were
 2 to 4 times worse. What's more, the KDD benchmarks couldn't be run on any machine
 due to memory problems.
+
+As such, we stayed with the original sliding window convolutions.
+
+Next the decision was made to move away from making the number of layers dependent
+on the width of the dataset, and instead to make it a static number. The only
+thing dependent on the width of the dataset would thus be the amount of filters.
+
+Iterations 30 and 31 were executed in order to decide between a 4-layer and a
+5-layer architecture. 5 layers, in the end, led to a better overall performance
+than 4 layers. In fact, the overall quality was now comparable with the default
+implementation of TabNet.
+
+In iteration 32, it was attempted to further improve the 5-layer architecture.
+Instead of feeding unprocessed datasets into the algorithm, these datasets were
+first preprocessed by being fed through a SMOTE algorithm, namely BorderlineSMOTE.
+As was determined earlier on, this was the one algorithm that performed well on
+all 4 datasets, and didn't halt with an error -- the other one being the original
+SMOTE itself, though that one performed a bit worse.
+
+The decision was made to limit the upsampling of each underrepresented class.
+Each such class was increased in size by a factor of 5000, and was limited
+to 10% of the largest class in each dataset. This was done in order to avoid
+the occuring of artifacts during upscaling, and to limit the memory requirements
+of the upscaled datasets. After all, e.g. the KDD dataset in its original form 
+takes up approximately 0.8 Gb of space: if one were to upsample every single class
+in it to the size of the largest one ("normal."), this size would quickly explode
+to over 10 Gb, as this dataset has many classes that, originally, have only 2 entries
+in our training dataset.
+
+Interestingly, this "limited" upscaling had no adverse effects on the predictive
+quality of the algorithms. Indeed, it was empirically observed that this approach
+improved the quality even further.
+
+In iterations 33 and 34, a different boosting approach was considered. Instead
+of using a linear classifier to classify the features extracted by the NN into
+each label, XGBoost was applied to this task. Iteration 33 had XGBoost classifying
+each entry based only on the extracted features, while iteration 34 had it
+classifying entries based on a combination of the extracted features with the
+original ones.
+
+Unsurprisingly, the 34th iteration, the one classifying based on more information,
+performed better than the 33rd. Surprisingly, though, it was observed that both
+iterations actually performed better than simply applying XGBoost on the dataset
+without any preprocessing -- i.e. that classification based on just the extracted
+features was (marginally) better than that on the original features. Still, this
+difference in performance is within margin of error, so some other random factors
+could have played a role.
+
+Ultimately, however, the neural network's architecture now performed better
+than all three benchmarks algorithms: eLCS, TabNet, and XGBoost.
+
+In iteration 35, it was attempted to use another boosting method. This time,
+instead of using a cross-entropy loss, we used a Highly Adaptive Focal Loss from
+<insert paper here>. This change showed to provide no improvement on its own.
+Admittedly, since the original paper provided no implementation, we had to
+reverse-engineer and implement it ourselves. Therefore, it could be that this
+had some impact on the quality as well.

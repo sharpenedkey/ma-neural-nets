@@ -1,0 +1,11 @@
+37-bsmote-xgboost:
+* combines 32 with 34
+
+38-bsmote-fl:
+* combines 32 with 36
+
+39-xgboost-fl:
+* combines 34 with 36
+
+40-bsmote-xgboost-fl:
+* combines 32, 34, and 36

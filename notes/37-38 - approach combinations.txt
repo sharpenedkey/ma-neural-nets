@@ -14,3 +14,8 @@ Since the combination of all 3 provided a worse performance than
 BSMOTE with XGBoost, it was also decided not to benchmark XGBoost with FL,
 as the specifics of XGBoost's implementation make using FL a suboptimal
 choice.
+
+Focal Loss with BSMOTE was unsuccessful due to the runtime being about X
+times as slow as with just BSMOTE (1 run of KDD takes more than 24 hours,
+7 runs of covertype in 12 hours, darknet unsuccessful in 12 hours,
+shuttle 50 runs in 22 minutes)

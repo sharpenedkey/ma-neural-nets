@@ -74,6 +74,4 @@ Finally, as for the KDD dataset, the algorithm could not find any support vector
 features to be noise-like, which lead to an abrupt stop to the execution:
 ValueError: All support vectors are considered as noise. SVM-SMOTE is not adapted to your dataset. Try another SMOTE variant.
 
-In conclusion, it was decided that we would not use any rebalancing mechanisms that modify the datasets.
-Not only did it not improve the performance of the architecture, but it also delegated the purpose of building
-a neural network capable of processing imbalanced datasets onto a separate pre-processing element.
+In conclusion, it was decided that we would not use any rebalancing mechanisms other than BorderlineSMOTE.
